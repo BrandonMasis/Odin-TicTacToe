@@ -155,6 +155,7 @@
   });
 
   reStartBtn.addEventListener("click", () => {
+    isWaiting = false;
     gameboard.clear();
     gameboard.render();
 
