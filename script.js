@@ -27,9 +27,11 @@
     render: function () {
       for (let i = 0; i < gameboard.board.length; i++) {
         if (gameboard.board[i] == "x") {
-          squares[i].innerHTML = `<h2 class="ex">+</h2>`;
+          // squares[i].innerHTML = `<h2 class="ex">+</h2>`;
+          squares[i].innerHTML = `<h2 class>🥩</h2>`;
         } else if (gameboard.board[i] == "o") {
-          squares[i].innerHTML = `<i class="mark fa-solid fa-circle-dot"></i>`;
+          squares[i].innerHTML = `<h2 class>🐮</h2>`;
+          // squares[i].innerHTML = `<i class="mark fa-solid fa-circle-dot"></i>`;
         } else {
           squares[i].innerHTML = "";
         }
