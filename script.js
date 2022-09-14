@@ -76,6 +76,7 @@
           [2, 4, 6]
         );
 
+        playerScore.querySelector("span").textContent = gameboard.score.player;
         gameboard.render();
 
         setTimeout(() => {
@@ -91,13 +92,11 @@
               [0, 4, 8],
               [2, 4, 6]
             );
+            machineScore.querySelector("span").textContent =
+              gameboard.score.machine;
             gameboard.render();
           }
         }, 200);
-
-        playerScore.querySelector("span").textContent = gameboard.score.player;
-        machineScore.querySelector("span").textContent =
-          gameboard.score.machine;
 
         isMarked = false;
       }
