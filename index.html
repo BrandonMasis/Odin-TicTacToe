@@ -17,6 +17,14 @@
   </head>
   <body>
     <section id="game">
+      <div class="gameScore">
+        <h2 class="playerScore">
+          <i class="fa-solid fa-user-tie"></i> Player <span>0</span>
+        </h2>
+        <h2 class="machineScore">
+          <span>0</span> Machine <i class="fa-solid fa-robot"></i>
+        </h2>
+      </div>
       <div class="gameboard">
         <div class="square" data-index="0"><h1>T</h1></div>
         <div class="square" data-index="1"><h1>I</h1></div>
@@ -30,7 +38,9 @@
         <div class="square" data-index="7"><h1>O</h1></div>
         <div class="square" data-index="8"><h1>E</h1></div>
       </div>
-      <button class="start">Start</button>
+
+      <button class="start btn">Start</button>
+      <button class="reStart btn">Re-start</button>
     </section>
   </body>
 </html>

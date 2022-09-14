@@ -1,42 +1,51 @@
-// (function () {
-const squares = document.querySelectorAll(".square");
+(function () {
+  const squares = document.querySelectorAll(".square");
+  const startBtn = document.querySelector(".start");
+  const reStartBtn = document.querySelector(".reStart");
+  const playerScore = document.querySelector(".playerScore");
+  const machineScore = document.querySelector(".machineScore");
+  const gameScore = document.querySelector(".gameScore");
+  let isMarked = undefined;
+  let isWaiting = false;
 
-const gameboard = {
-  board: [
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ],
-  score: {
-    player: 0,
-    machine: 0,
-  },
-  render: function () {
-    for (let i = 0; i < this.board.length; i++) {
-      if (this.board[i] == "x") {
-        squares[i].innerHTML = `<h1 class="mark ex">+</h1>`;
-      } else if (this.board[i] == "o") {
-        squares[i].innerHTML = `<i class="mark fa-solid fa-circle-dot"></i>`;
-      } else {
-        squares[i].innerHTML = "";
+  const gameboard = {
+    board: [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ],
+    score: {
+      player: 0,
+      machine: 0,
+    },
+    render: function () {
+      for (let i = 0; i < gameboard.board.length; i++) {
+        if (gameboard.board[i] == "x") {
+          squares[i].innerHTML = `<h2 class="ex">+</h2>`;
+        } else if (gameboard.board[i] == "o") {
+          squares[i].innerHTML = `<i class="mark fa-solid fa-circle-dot"></i>`;
+        } else {
+          squares[i].innerHTML = "";
+        }
       }
-    }
-  },
-  turn: function () {
-    let marked = Boolean;
+    },
+    clear: function () {
+      for (let i = 0; i < 9; i++) {
+        gameboard.board[i] = undefined;
+      }
+    },
+    turn: function () {
+      if (gameboard.board[this.getAttribute("data-index")] == undefined) {
+        gameboard.board[this.getAttribute("data-index")] = playerMark;
+        isMarked = true;
+      }
 
-    if (gameboard.board[this.getAttribute("data-index")] == undefined) {
-      gameboard.board[this.getAttribute("data-index")] = playerMark;
-      marked = true;
-    }
-
-    if (marked == true) {
       let computerChoice = () => {
         let empty = [];
         for (let i = 0; i < gameboard.board.length; i++) {
@@ -48,100 +57,111 @@ const gameboard = {
           computerMark;
       };
 
-      computerChoice();
-      gameboard.check(0, 1, 2);
-      gameboard.check(3, 4, 5);
-      gameboard.check(6, 7, 8);
+      if (isMarked == true && isWaiting == false) {
+        if (gameboard.board.includes(undefined) == false) {
+          console.log("it's a tie");
+          gameboard.clear();
+        }
 
-      gameboard.check(0, 3, 6);
-      gameboard.check(1, 4, 7);
-      gameboard.check(2, 5, 8);
+        gameboard.check(
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        );
 
-      gameboard.check(0, 4, 8);
-      gameboard.check(2, 4, 6);
-    }
+        gameboard.render();
 
-    gameboard.render();
-  },
-  start: function () {
-    squares.forEach((square) => {
-      square.addEventListener(
-        "click",
-        gameboard.turn
-        // () => {
-        //   let marked = Boolean;
+        setTimeout(() => {
+          computerChoice();
+          if (!isWaiting) {
+            gameboard.check(
+              [0, 1, 2],
+              [3, 4, 5],
+              [6, 7, 8],
+              [0, 3, 6],
+              [1, 4, 7],
+              [2, 5, 8],
+              [0, 4, 8],
+              [2, 4, 6]
+            );
+            gameboard.render();
+          }
+        }, 200);
 
-        //   if (gameboard.board[square.getAttribute("data-index")] == undefined) {
-        //     gameboard.board[square.getAttribute("data-index")] = playerMark;
-        //     marked = true;
-        //   }
+        playerScore.querySelector("span").textContent = gameboard.score.player;
+        machineScore.querySelector("span").textContent =
+          gameboard.score.machine;
 
-        //   if (marked == true) {
-        //     let computerChoice = () => {
-        //       let empty = [];
-        //       for (let i = 0; i < gameboard.board.length; i++) {
-        //         if (gameboard.board[i] === undefined) {
-        //           empty.push(i);
-        //         }
-        //       }
-        //       gameboard.board[empty[Math.floor(Math.random() * empty.length)]] =
-        //         computerMark;
-        //     };
-
-        //     computerChoice();
-        //     gameboard.check(0, 1, 2);
-        //     gameboard.check(3, 4, 5);
-        //     gameboard.check(6, 7, 8);
-
-        //     gameboard.check(0, 3, 6);
-        //     gameboard.check(1, 4, 7);
-        //     gameboard.check(2, 5, 8);
-
-        //     gameboard.check(0, 4, 8);
-        //     gameboard.check(2, 4, 6);
-        //   }
-
-        //   gameboard.render();
-        // });
-      );
-    });
-  },
-  check: function (a, b, c) {
-    let aa = gameboard.board[a];
-    let bb = gameboard.board[b];
-    let cc = gameboard.board[c];
-
-    if (
-      gameboard.board[a] != undefined &&
-      gameboard.board[a] === gameboard.board[b] &&
-      gameboard.board[b] === gameboard.board[c]
-    ) {
-      for (let i = 0; i < 9; i++) {
-        gameboard.board[i] = undefined;
+        isMarked = false;
       }
+    },
+    start: function () {
       gameboard.render();
+      squares.forEach((square) => {
+        square.addEventListener("click", gameboard.turn);
+      });
+    },
+    check: function (...arrs) {
+      arrs.forEach((arr) => {
+        let aa = gameboard.board[arr[0]];
+        let bb = gameboard.board[arr[1]];
+        let cc = gameboard.board[arr[2]];
 
-      if (aa === playerMark && bb === playerMark && cc === playerMark) {
-        console.log("you won");
-      } else if (
-        aa === computerMark &&
-        bb === computerMark &&
-        cc === computerMark
-      ) {
-        console.log("you lose");
-      }
-    }
-  },
-};
+        if (
+          gameboard.board[arr[0]] != undefined &&
+          gameboard.board[arr[0]] === gameboard.board[arr[1]] &&
+          gameboard.board[arr[1]] === gameboard.board[arr[2]]
+        ) {
+          isWaiting = true;
 
-gameboard.start();
+          setTimeout(() => {
+            gameboard.clear();
+            gameboard.render();
+            isWaiting = false;
+            playerScore.style.color = "white";
+            machineScore.style.color = "white";
+          }, 3000);
+          if (aa === playerMark && bb === playerMark && cc === playerMark) {
+            console.log("you won");
+            gameboard.score.player += 1;
+            playerScore.style.color = "#6eff70";
+          } else if (
+            aa === computerMark &&
+            bb === computerMark &&
+            cc === computerMark
+          ) {
+            console.log("you lose");
+            gameboard.score.machine += 1;
 
-let playerMark = "x";
-let computerMark = "o";
-// })();
+            machineScore.style.color = "#6eff70";
+          }
+        }
+      });
+    },
+  };
 
-// let me = playerFactory("brandon");
+  startBtn.addEventListener("click", () => {
+    gameboard.start();
+    startBtn.style.display = "none";
+    reStartBtn.style.display = "block";
+    gameScore.style.display = "flex";
+  });
 
-//up to 9 turns?
+  reStartBtn.addEventListener("click", () => {
+    gameboard.clear();
+    gameboard.render();
 
-//After my turn computer checks the available spaces and makes a move
+    gameboard.score.machine = 0;
+    gameboard.score.player = 0;
+    playerScore.querySelector("span").textContent = gameboard.score.player;
+    machineScore.querySelector("span").textContent = gameboard.score.machine;
+  });
+
+  let playerMark = "x",
+    computerMark = "o";
+})();

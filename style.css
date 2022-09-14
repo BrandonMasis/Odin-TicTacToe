@@ -74,7 +74,12 @@ body{
 .square:hover{
     background-color: var(--squareHover);
 }
-.start{
+
+.square *{
+    transition:  cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition-timing-function: ease-out;
+}
+.btn{
     width: 12rem;
     height: 3.5rem;
 
@@ -92,11 +97,11 @@ body{
     
 }
 
-.start:hover{
+.btn:hover{
     background-color: rgb(212, 44, 44);
 }
 
-.start:active{
+.btn:active{
     transform: translateY(4px);
     box-shadow: var(--buttonBody) 0px 1px;
 }
@@ -110,4 +115,20 @@ body{
     font-size: 12.5rem;
     transform: rotate(45deg);
     color: var(--player);
+}
+
+.reStart{
+    display: none;
+}
+
+.gameScore{
+    display: none;
+    justify-content: center;
+    gap: 10rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+h2{
+    font-family: var(--montserrat);
 }
